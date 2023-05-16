@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Kanyno | Mis mascotas {% endblock %}
+
+{% block content %}
+<!-- Heading -->
+<div class="container-fluid">
+  <p class="h1 text-center">Mis mascotas</p>
+</div>
+
+<!-- Content -->
+<div class="container-fluid">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button
+        class="nav-link active"
+        id="nav-view-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-view"
+        type="button"
+        role="tab"
+        aria-controls="nav-view"
+        aria-selected="true"
+      >
+        Mis mascotas
+      </button>
+      <button
+        class="nav-link"
+        id="nav-add-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-add"
+        type="button"
+        role="tab"
+        aria-controls="nav-add"
+        aria-selected="false"
+      >
+        Agregar mascota
+      </button>
+      <button
+        class="nav-link"
+        id="nav-edit-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-edit"
+        type="button"
+        role="tab"
+        aria-controls="nav-edit"
+        aria-selected="false"
+      >
+        Editar mascota
+      </button>
+      <button
+        class="nav-link"
+        id="nav-delete-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-delete"
+        type="button"
+        role="tab"
+        aria-controls="nav-delete"
+        aria-selected="false"
+      >
+        Eliminar mascota
+      </button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active"
+      id="nav-view"
+      role="tabpanel"
+      aria-labelledby="nav-view-tab"
+      tabindex="0"
+    >
+      Ver
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-add"
+      role="tabpanel"
+      aria-labelledby="nav-add-tab"
+      tabindex="0"
+    >
+      Agregar
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-edit"
+      role="tabpanel"
+      aria-labelledby="nav-edit-tab"
+      tabindex="0"
+    >
+      Editar
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-delete"
+      role="tabpanel"
+      aria-labelledby="nav-delete-tab"
+      tabindex="0"
+    >
+      Eliminar
+    </div>
+  </div>
+</div>
+{% endblock %}
