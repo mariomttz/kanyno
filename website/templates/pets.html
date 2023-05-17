@@ -80,7 +80,10 @@
       aria-labelledby="nav-add-tab"
       tabindex="0"
     >
-      Agregar
+      <form action="/pets/add/" method="POST">
+        {% csrf_token %} {{formAdd.as_p}}
+        <button>Agregar</button>
+      </form>
     </div>
     <div
       class="tab-pane fade"

@@ -7,7 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kanyno | Iniciar sesi&oacute;n</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon.png' %}"
+    />
 
     <!-- CSS Bootstrap link -->
     <link
@@ -24,7 +28,12 @@
     </div>
 
     <!-- Content -->
-    <div class="container"></div>
+    <div class="container">
+      <form action="/login/" method="POST">
+        {% csrf_token %} {{form.as_p}}
+        <button>Iniciar sesi&oacute;n</button>
+      </form>
+    </div>
 
     <!-- JS Bootstrap scripts -->
     <script

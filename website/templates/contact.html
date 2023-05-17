@@ -8,7 +8,7 @@
 <div class="container-fluid">
   <p class="h1 text-center">Contacto</p>
   <p class="h4 text-center">
-    Ponte en contacto con nosotros directamente si tiene alguna pregunta
+    Ponte en contacto con nosotros directamente si tiene alguna pregunta.
   </p>
 </div>
 
@@ -21,6 +21,14 @@
       nuestro personal estar&aacute; encantado de ponerse en contacto
       directamente con usted y responder a sus preguntas lo antes posible.
     </p>
+
+    <!-- Contact form -->
+    <form action="">
+      {% csrf_token %}
+      {{form.as_p}}
+
+      <button type="submit">Enviar mensaje</button>
+    </form>
   </div>
 </div>
 {% endblock %}

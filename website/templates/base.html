@@ -7,7 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %} {% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon.png' %}"
+    />
 
     <!-- CSS Bootstrap link -->
     <link
@@ -93,7 +97,12 @@
               </ul>
             </li>
           </ul>
-          <form class="d-flex" role="search">
+          <form
+            action="/search/"
+            method="POST"
+            class="d-flex"
+            role="search"
+          >
             <input
               class="form-control me-2"
               type="search"
@@ -111,14 +120,6 @@
             role="button"
             aria-disabled="true"
             >Cuenta</a
-          >
-          <a
-            href="{% url 'logout' %}"
-            class="btn btn-outline-danger me-2"
-            tabindex="-1"
-            role="button"
-            aria-disabled="true"
-            >Salir</a
           >
           <a
             href="{% url 'signup' %}"

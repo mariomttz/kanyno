@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Kanyno | Cuenta {% endblock %}
+{% block title %} Kanyno | Cuenta {%endblock %}
 
 {% block content %}
 <!-- Heading -->
@@ -10,5 +10,23 @@
 </div>
 
 <!-- Content -->
-<div class="container"></div>
+<div class="container">
+  <!-- User info -->
+  
+  <!-- Actions buttons -->
+  <div class="d-grid gap-2 d-md-block col-6">
+    <a
+      class="btn btn-outline-danger"
+      href="{% url 'del-account' %}"
+      role="button"
+      >Borrar cuenta</a
+    >
+    <a
+      class="btn btn-outline-dark"
+      href="{% url 'logout' %}"
+      role="button"
+      >Cerrar sesi&oacute;n</a
+    >
+  </div>
+</div>
 {% endblock %}

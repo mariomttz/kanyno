@@ -11,5 +11,108 @@
 </div>
 
 <!-- Content -->
-<div class="container"></div>
+<div class="container">
+  <!-- Carousel -->
+  <div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <a href="{% url 'calculator' %}">
+          <img
+            src="{% static 'img/dog_img1.jpg' %}"
+            class="d-block w-100"
+            alt="Perro comiendo alimento para perro"
+          />
+        </a>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>¿No sabes cuanto come tu perrito?</h5>
+          <p>
+            Con nuestra calculadora de gramaje para perro no tendr&aacute;s
+            m&aacute;s ese problema.
+          </p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <a href="{% url 'about' %}">
+          <img
+            src="{% static 'img/dog_img2.jpg' %}"
+            class="d-block w-100"
+            alt="Dos perros sentados en una pradera"
+          />
+        </a>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>¿Sabes que es Kanyno?</h5>
+          <p>
+            Puedes dar "clic" en la imagen y descubrir que es Kanyno.
+          </p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <a href="{% url 'contact' %}">
+          <img
+            src="{% static 'img/dog_img3.jpg' %}"
+            class="d-block w-100"
+            alt="Un perro con lentes sentado en una silla"
+          />
+        </a>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>¿Tienes duda?</h5>
+          <p>Puedes ponerte en contacto con nosotros.</p>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleCaptions"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+
+  <!-- Text -->
+  <div class="container-sm">
+    <p class="h4">¿Qu&eacute; es un perro?</p>
+    <p></p>
+
+    <p class="h4">Beneficios de tener un perro</p>
+    <ul class="list-unstyled">
+      <li></li>
+    </ul>
+
+    <p class="h4">Alimentaci&oacute;n de un perro</p>
+  </div>
+</div>
 {% endblock %}
