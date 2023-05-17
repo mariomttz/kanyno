@@ -1,7 +1,7 @@
 <h1 align="center">🐕 Kanyno 🐕</h1>
 <h4 align="center"><i>Pancita llena, perrito contento.</i></h4>
 
-<h5 align="center">Manual de usuario del sitio web Kanyno.</h4>
+<h3 align="center">Manual de usuario del sitio web Kanyno.</h3>
 
 ### Introducción
 El documento presente está hecho con el público en mente de los usuarios finales, es decir, aquellos dueños de mascotas caninas (perros) que usen este software en línea y busquen información adicional de cómo usar las características del mismo. En las próximas páginas de este documento se explicará y se darán ejemplos de como utilizar dicho software en línea, más específicamente la calculadora de gramaje. La calculadora de gramaje es un servicio que al responder distintas preguntas y junto a la información ya obtenida de la mascota se produce en número estimado del posible gramaje que necesita el canino dependiendo de diversos factores.
