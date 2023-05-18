@@ -16,8 +16,6 @@ El documento presente está hecho con el público en mente de los usuarios final
 #### Cambios notables desde la última versión.
 - Se realizaron importantes mejoras en las interfaces de usuario, así como también en los algoritmos que realizan los cálculos del alimento de su mascota.
 
-### Conceptos de las operaciones.
-
 ### Procedimientos.
 La calculadora es una herramienta que busca proveer información nutrimental adicional de la mascota del usuario. Para usarla es necesario ya haber creado una cuenta y haber incluido los datos de la mascota a la que se le quiera hacer el cálculo. Es necesario además tener en cuenta durante el proceso de cálculo información adicional variable como: si es hembra la mascota, si está en proceso de gestación, un índice de actividad físico y el peso de la mascota. Si un campo no es llenado correctamente, se avisará al usuario de esto.
 
