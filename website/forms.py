@@ -1,4 +1,6 @@
 # Libraries and packages
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.models import User
 from django import forms
 from .models import *
 from .choices import *
@@ -7,11 +9,25 @@ from .choices import *
 class calculatorForm(forms.Form):
     pass
 
-class signupForm(forms.Form):
+class signupForm(UserChangeForm):
     name = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre')
     email = forms.EmailField(required = True, label = 'Correo electrónico')
     password1 = forms.CharField(min_length = 8, max_length = 16, required = True, label = 'Contraseña')
     password2 = forms.CharField(min_length = 8, max_length = 16, required = True, label = 'Repita su contraseña')
+
+    class Meta:
+        model = User
+        fields = ('name', 'email', 'password1', 'password2')
+
+    def save(self, commit = True):
+        user = super(UserCreateForm, self).save(commit = False)
+        user.nombre = self.cleaned_data['name']
+        user.correo = self.cleaned_data['email']
+        user.password = self.cleaned_data['password1']
+
+        if commit:
+            user.save()
+            return user
 
 class loginForm(forms.Form):
     email = forms.EmailField(required = True, label = 'Correo electrónico')

@@ -12,9 +12,7 @@ def calculator(request):
 
     else:
         form = calculatorForm()
-        return render(request, 'calculator.html', {
-            'form': form
-            })
+        return render(request, 'calculator.html', {'form': form})
 
 def about(request):
     return render(request, 'about.html')
@@ -25,9 +23,7 @@ def contact(request):
 
     else:
         form = contactForm()
-        return render(request, 'contact.html', {
-            'form': form
-            })
+        return render(request, 'contact.html', {'form': form})
 
 def search(request):
     if request.method == 'POST':
@@ -39,9 +35,7 @@ def signup(request):
 
     else:
         form = signupForm()
-        return render(request, 'signup.html', {
-            'form': form
-            })
+        return render(request, 'signup.html', {'form': form})
 
 def login(request):
     if request.method == 'POST':
@@ -49,9 +43,7 @@ def login(request):
 
     else:
         form = loginForm()
-        return render(request, 'login.html',{
-            'form': form
-            })
+        return render(request, 'login.html',{'form': form})
 
 def logout(request):
     pass
@@ -60,9 +52,7 @@ def logout(request):
 def viewUserAccount(request):
     if request.method == 'GET':
         form = editUserForm()
-        return render(request, 'userAccount.html', {
-            'form': form
-            })
+        return render(request, 'userAccount.html', {'form': form})
 
 def editUserAccount(request):
     pass
@@ -74,10 +64,7 @@ def viewPets(request):
     if request.method == 'GET':
         formAdd = addPetForm()
         formEdit = editPetForm()
-        return render(request, 'pets.html', {
-            'formAdd': formAdd,
-            'formEdit': formEdit
-            })
+        return render(request, 'pets.html', {'formAdd': formAdd, 'formEdit': formEdit})
 
 def addPet(request):
     pass
