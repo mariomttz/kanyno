@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
-{% block title %} Kanyno | Mis mascotas {% endblock %}
+{%block title %} Kanyno | Mis mascotas {% endblock %}
 
 {% block content %}
 <!-- Heading -->
-<div class="container-fluid">
+<div class="mx-auto p-5" style="width: 700px">
   <p class="h1 text-center">Mis mascotas</p>
 </div>
 
 <!-- Content -->
-<div class="container-fluid">
+<div class="container-sm">
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <button
@@ -39,27 +40,27 @@
       </button>
       <button
         class="nav-link"
-        id="nav-edit-tab"
+        id="nav-cal-tab"
         data-bs-toggle="tab"
-        data-bs-target="#nav-edit"
+        data-bs-target="#nav-cal"
         type="button"
         role="tab"
-        aria-controls="nav-edit"
+        aria-controls="nav-cal"
         aria-selected="false"
       >
-        Editar mascota
+        Mis c&aacute;lculos
       </button>
       <button
         class="nav-link"
-        id="nav-delete-tab"
+        id="nav-edit-del-tab"
         data-bs-toggle="tab"
-        data-bs-target="#nav-delete"
+        data-bs-target="#nav-edit-del"
         type="button"
         role="tab"
-        aria-controls="nav-delete"
+        aria-controls="nav-edit-del"
         aria-selected="false"
       >
-        Eliminar mascota
+        Editar y eliminar mascota
       </button>
     </div>
   </nav>
@@ -71,7 +72,30 @@
       aria-labelledby="nav-view-tab"
       tabindex="0"
     >
-      Ver
+      <div class="container-sm text-center">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">N&uacute;mero</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Fecha de nacimiento</th>
+              <th scope="col">Raza</th>
+              <th scope="col">Sexo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pet in Pets %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ pet.nombre }}</td>
+              <td>{{ pet.fecha_de_nacimiento }}</td>
+              <td>{{ pet.raza }}</td>
+              <td>{{ pet.sexo }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     <div
       class="tab-pane fade"
@@ -80,28 +104,70 @@
       aria-labelledby="nav-add-tab"
       tabindex="0"
     >
-      <form action="/pets/add/" method="POST">
-        {% csrf_token %} {{formAdd.as_p}}
-        <button>Agregar</button>
-      </form>
+      <div class="mx-auto p-3" style="width: 700px">
+        <form action="/pets/add/" method="POST">
+          {% csrf_token %} {{ formAdd | crispy }}
+          <button type="submit" class="btn btn-outline-secondary">
+            Agregar
+          </button>
+        </form>
+      </div>
     </div>
     <div
       class="tab-pane fade"
-      id="nav-edit"
+      id="nav-cal"
       role="tabpanel"
-      aria-labelledby="nav-edit-tab"
+      aria-labelledby="nav-cal-tab"
       tabindex="0"
     >
-      Editar
+      Mis cálculos
     </div>
     <div
       class="tab-pane fade"
-      id="nav-delete"
+      id="nav-edit-del"
       role="tabpanel"
-      aria-labelledby="nav-delete-tab"
+      aria-labelledby="nav-edit-del-tab"
       tabindex="0"
     >
-      Eliminar
+      <div class="container-sm text-center">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">N&uacute;mero</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Fecha de nacimiento</th>
+              <th scope="col">Raza</th>
+              <th scope="col">Sexo</th>
+              <th scope="col">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pet in Pets %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ pet.nombre }}</td>
+              <td>{{ pet.fecha_de_nacimiento }}</td>
+              <td>{{ pet.raza }}</td>
+              <td>{{ pet.sexo }}</td>
+              <td>
+                <a
+                  class="btn btn-outline-primary me-2"
+                  href="/pets/edit/{{ pet.clave_de_mascota }}"
+                  role="button"
+                  >Editar</a
+                >
+                <a
+                  class="btn btn-outline-danger"
+                  href="/pets/delete/{{ pet.clave_de_mascota }}"
+                  role="button"
+                  >Eliminar</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

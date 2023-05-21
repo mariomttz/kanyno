@@ -58,11 +58,13 @@
                 >Calculadora</a
               >
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'pets' %}"
                 >Mis mascotas</a
               >
             </li>
+            {% endif %}
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -113,6 +115,7 @@
               Buscar
             </button>
           </form>
+          {% if user.is_authenticated %}
           <a
             href="{% url 'account' %}"
             class="btn btn-outline-warning me-2"
@@ -121,6 +124,7 @@
             aria-disabled="true"
             >Cuenta</a
           >
+          {% else %}
           <a
             href="{% url 'signup' %}"
             class="btn btn-outline-primary me-2"
@@ -130,13 +134,14 @@
             >Registrarse</a
           >
           <a
-            href="{% url 'login' %}"
+            href="{% url 'signin' %}"
             class="btn btn-outline-secondary"
             tabindex="-1"
             role="button"
             aria-disabled="true"
             >Iniciar sesi&oacute;n</a
           >
+          {% endif %}
         </div>
       </div>
     </nav>

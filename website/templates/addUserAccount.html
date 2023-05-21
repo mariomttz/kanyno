@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kanyno | Registrarse</title>
+    <title>Kanyno | Agrega tu informaci&oacute;n</title>
     <link
       rel="icon"
       type="image/x-icon"
@@ -25,7 +25,7 @@
   <body>
     <!-- Heading -->
     <div class="mx-auto p-5" style="width: 700px;">
-      <p class="h1 text-center">Reg&iacute;strate en Kanyno</p>
+      <p class="h1 text-center">Agrega tu informaci&oacute;n</p>
     </div>
 
     <!-- Errors messages -->
@@ -45,19 +45,10 @@
 
     <!-- Content -->
     <div class="mx-auto p-3" style="width: 700px;">
-      <form action="/signup/" method="POST">
+      <form action="/account/add/" method="POST">
         {% csrf_token %} {{ form|crispy }}
-        <button type="submit" class="btn btn-outline-secondary">
-          Registrarme
-        </button>
+        <button type="submit" class="btn btn-outline-secondary">Agregar informaci&oacute;n</button>
       </form>
-    </div>
-
-    <div class="mx-auto p-2" style="width: 400px;">
-      <p class="text-center text-md-start">
-        ¿Ya tienes una cuenta en Kanyno?
-        <a href="{% url 'signin' %}">Inicia sesi&oacute;n.</a>
-      </p>
     </div>
 
     <!-- JS Bootstrap scripts -->

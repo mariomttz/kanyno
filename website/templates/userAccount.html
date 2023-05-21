@@ -1,30 +1,59 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Kanyno | Cuenta {%endblock %}
+{% block title %} Kanyno | Cuenta {% endblock %}
 
 {% block content %}
 <!-- Heading -->
-<div class="container-fluid">
+<div class="mx-auto p-5" style="width: 700px">
   <p class="h1 text-center">Mi cuenta</p>
 </div>
 
 <!-- Content -->
-<div class="container">
-  <!-- User info -->
-  
+<div class="container-sm">
+  <div class="container-sm text-center">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Nombre de usuario</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Correo electrónico</th>
+          <th scope="col">Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ userInfo.user }}</td>
+          <td>{{ userInfo.nombre }}</td>
+          <td>{{ userInfo.correo }}</td>
+          <td>
+            <a
+              class="btn btn-outline-primary me-2"
+              href="/account/edit/{{ userInfo.user.id }}"
+              role="button"
+              >Editar informaci&oacute;n</a
+            >
+            <a
+              class="btn btn-outline-success"
+              href="/account/password/{{ userInfo.user.id }}"
+              role="button"
+              >Cambiar contraseña</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Actions buttons -->
   <div class="d-grid gap-2 d-md-block col-6">
     <a
       class="btn btn-outline-danger"
-      href="{% url 'del-account' %}"
+      href="/account/delete/{{ userInfo.user }}"
       role="button"
       >Borrar cuenta</a
     >
-    <a
-      class="btn btn-outline-dark"
-      href="{% url 'logout' %}"
-      role="button"
+    <a class="btn btn-outline-dark" href="{% url 'signout' %}" role="button"
       >Cerrar sesi&oacute;n</a
     >
   </div>
