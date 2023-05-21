@@ -16,7 +16,8 @@
       <thead>
         <tr>
           <th scope="col">Nombre de usuario</th>
-          <th scope="col">Nombre</th>
+          <th scope="col">Nombre(s)</th>
+          <th scope="col">Apellido(s)</th>
           <th scope="col">Correo electrónico</th>
           <th scope="col">Opciones</th>
         </tr>
@@ -25,6 +26,7 @@
         <tr>
           <td>{{ userInfo.user }}</td>
           <td>{{ userInfo.nombre }}</td>
+          <td>{{ userInfo.apellido }}</td>
           <td>{{ userInfo.correo }}</td>
           <td>
             <a
@@ -35,7 +37,7 @@
             >
             <a
               class="btn btn-outline-success"
-              href="/account/password/{{ userInfo.user.id }}"
+              href="{% url 'change-password' %}"
               role="button"
               >Cambiar contraseña</a
             >
