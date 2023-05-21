@@ -1,13 +1,15 @@
 # Libraries and packages
 
 # Models choices
-
 breeds = [
-    ('AFF', 'Affenpinscher'), ('AFG', 'Afgano'), ('AKI', 'Akita japones'), ('BAS', 'Basenji'),
-    ('OTR', 'Otro')
+    ('Affenpinscher', 'Affenpinscher'),
+    ('Afgano', 'Afgano'),
+    ('Akita japones', 'Akita japones'),
+    ('Basenji', 'Basenji'),
+    ('Otro', 'Otro')
 ]
 
 sex = [
-    ('H', 'Hembra'),
-    ('M', 'Macho'),
+    ('Hembra', 'Hembra'),
+    ('Macho', 'Macho'),
 ]

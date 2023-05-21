@@ -1,6 +1,11 @@
 # Libraries and packages 
-from django.shortcuts import render
-from .forms import *
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from website.auxiliaryFunctions import *
+from website.models import *
+from website.forms import *
 
 # Website views
 def home(request):
@@ -31,46 +36,157 @@ def search(request):
 
 def signup(request):
     if request.method == 'POST':
-        pass
+        pass1 = request.POST['password1']
+        pass2 = request.POST['password2']
 
+        if pass1 == pass2:
+            username = request.POST['username']
+
+            try:
+                user = User.objects.create_user(username = username, password = pass1)
+                user.save()
+                login(request, user)
+                return redirect('add-account')
+
+            except:
+                form = UserCreationForm()
+                error = 'El nombre de usuario no está disponible.'
+                return render(request, 'signup.html', {'form': form, 'error': error})
+        else:
+            form = UserCreationForm()
+            error = 'Las contraseñas no coinciden, inténtalo de nuevo.'
+            return render(request, 'signup.html', {'form': form, 'error': error})
     else:
-        form = signupForm()
+        form = UserCreationForm()
         return render(request, 'signup.html', {'form': form})
 
-def login(request):
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username = username, password = password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+
+        else:
+            form = AuthenticationForm()
+            error = 'El nombre de usuario o la contraseña son incorrectos. Intenta de nuevo.'
+            return render(request, 'signin.html', {'form': form, 'error': error})
+    else:
+        form = AuthenticationForm()
+        return render(request, 'signin.html', {'form': form})
+
+def signout(request):
+    logout(request)
+    return redirect('home')
+
+# Users and pets views
+def viewUserAccount(request):
+    username = request.user
+    userInfo = usuarios.objects.get(user = username)
+    return render(request, 'userAccount.html', {'userInfo': userInfo})
+
+def addUserAccount(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.user.password
+        username = request.user
+
+        user = usuarios.objects.create(nombre = name, correo = email, password = password, user = username)
+        user.save()
+        return redirect('home')
+
+    else:
+        form = addUserForm()
+        return render(request, 'addUserAccount.html', {'form': form})
+
+def editUserAccount(request, username = None):
     if request.method == 'POST':
         pass
 
     else:
-        form = loginForm()
-        return render(request, 'login.html',{'form': form})
+        user = usuarios.objects.get(user = username)
+        name = user.nombre
+        email = user.correo
+        form = editUserForm(initial = {'name': name, 'email': email})
 
-def logout(request):
-    pass
+        return render(request, 'editUser.html', {'user': user, 'form': form})
 
-# Users and pets views
-def viewUserAccount(request):
-    if request.method == 'GET':
-        form = editUserForm()
-        return render(request, 'userAccount.html', {'form': form})
-
-def editUserAccount(request):
-    pass
-
-def delUserAccount(request):
-    pass
+def delUserAccount(request, username):
+    user = User.objects.get(username = username)
+    user.delete()
+    return redirect('home')
 
 def viewPets(request):
     if request.method == 'GET':
-        formAdd = addPetForm()
-        formEdit = editPetForm()
-        return render(request, 'pets.html', {'formAdd': formAdd, 'formEdit': formEdit})
+        try:
+            username = request.user
+            user = usuarios.objects.get(user = username)
+            Pets = perros.objects.filter(clave_de_cuenta = user)
+            formAdd = addPetForm()
+            formEdit = editPetForm()
+            return render(request, 'pets.html', {'Pets': Pets, 'formAdd': formAdd, 'formEdit': formEdit})
+
+        except:
+            formAdd = addPetForm()
+            formEdit = editPetForm()
+            return render(request, 'pets.html', {'formAdd': formAdd, 'formEdit': formEdit})
 
 def addPet(request):
-    pass
+    if request.method == 'POST':
+        name = request.POST['name']
+        birthday = request.POST['birthday']
+        breed = request.POST['breed']
+        sex = request.POST['sex']
 
-def editPet(request):
-    pass
+        username = request.user
+        user = usuarios.objects.get(user = username)
+        userId = usuarios.objects.get(user = username).clave_de_cuenta
+        petId = dogKey(name, userId)
 
-def delPet(request):
-    pass
+        pet = perros.objects.create(
+            clave_de_mascota = petId, 
+            nombre = name,
+            fecha_de_nacimiento = birthday, 
+            raza = breed,
+            sexo = sex,
+            clave_de_cuenta = user
+            )
+        pet.save()
+
+        return redirect('pets')
+
+def editPet(request, petId = None):
+    if request.method == 'POST':
+        petId = request.POST['petId']
+        name = request.POST['name']
+        birthday = request.POST['birthday']
+        breed = request.POST['breed']
+        sex = request.POST['sex']
+
+        pet = perros.objects.get(clave_de_mascota = petId)
+        pet.nombre = name
+        pet.fecha_de_nacimiento = birthday
+        pet.raza = breed
+        pet.sexo = sex
+        pet.save()
+
+        return redirect('pets')
+
+    else:
+        pet = perros.objects.get(clave_de_mascota = petId)
+        name = pet.nombre
+        birthday = pet.fecha_de_nacimiento
+        breed = pet.raza
+        sex = pet.sexo
+        form = editPetForm(initial = {'name': name, 'birthday': birthday, 'breed': breed, 'sex': sex})
+
+        return render(request, 'editPet.html', {'pet': pet, 'form': form})
+
+def delPet(request, petId):
+    pet = perros.objects.get(clave_de_mascota = petId)
+    pet.delete()
+    return redirect('pets')
