@@ -1,5 +1,5 @@
 # Libraries and packages 
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -17,6 +17,7 @@ def calculator(request):
 
     else:
         form = calculatorForm()
+
         return render(request, 'calculator.html', {'form': form})
 
 def about(request):
@@ -27,8 +28,20 @@ def contact(request):
         pass
 
     else:
-        form = contactForm()
-        return render(request, 'contact.html', {'form': form})
+        try:
+            username = request.user
+            userInfo = usuarios.objects.get(user = username)
+            firstName = userInfo.nombre
+            lastName = userInfo.apellido
+            email = userInfo.correo
+            form = contactForm(initial = {'firstName': firstName, 'lastName': lastName, 'email': email})
+
+            return render(request, 'contact.html', {'form': form})
+
+        except:
+            form = contactForm()
+
+            return render(request, 'contact.html', {'form': form})
 
 def search(request):
     if request.method == 'POST':
@@ -46,18 +59,22 @@ def signup(request):
                 user = User.objects.create_user(username = username, password = pass1)
                 user.save()
                 login(request, user)
+
                 return redirect('add-account')
 
             except:
                 form = UserCreationForm()
                 error = 'El nombre de usuario no está disponible.'
+
                 return render(request, 'signup.html', {'form': form, 'error': error})
         else:
             form = UserCreationForm()
             error = 'Las contraseñas no coinciden, inténtalo de nuevo.'
+
             return render(request, 'signup.html', {'form': form, 'error': error})
     else:
         form = UserCreationForm()
+
         return render(request, 'signup.html', {'form': form})
 
 def signin(request):
@@ -68,56 +85,86 @@ def signin(request):
 
         if user is not None:
             login(request, user)
+
             return redirect('home')
 
         else:
             form = AuthenticationForm()
             error = 'El nombre de usuario o la contraseña son incorrectos. Intenta de nuevo.'
+
             return render(request, 'signin.html', {'form': form, 'error': error})
     else:
         form = AuthenticationForm()
+
         return render(request, 'signin.html', {'form': form})
 
 def signout(request):
     logout(request)
+
     return redirect('home')
 
 # Users and pets views
 def viewUserAccount(request):
     username = request.user
     userInfo = usuarios.objects.get(user = username)
+
     return render(request, 'userAccount.html', {'userInfo': userInfo})
 
 def addUserAccount(request):
     if request.method == 'POST':
-        name = request.POST['name']
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
         email = request.POST['email']
-        password = request.user.password
         username = request.user
 
-        user = usuarios.objects.create(nombre = name, correo = email, password = password, user = username)
+        user = usuarios.objects.create(nombre = firstName, apellido = lastName, correo = email, user = username)
         user.save()
+
         return redirect('home')
 
     else:
         form = addUserForm()
+
         return render(request, 'addUserAccount.html', {'form': form})
 
 def editUserAccount(request, username = None):
     if request.method == 'POST':
-        pass
+        userId = request.POST['userId']
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
+        email = request.POST['email']
+
+        user = usuarios.objects.get(user = userId)
+        user.nombre = firstName
+        user.apellido = lastName
+        user.correo = email
+        user.save()
+
+        return redirect('account')
 
     else:
         user = usuarios.objects.get(user = username)
-        name = user.nombre
+        firstName = user.nombre
+        lastName = user.apellido
         email = user.correo
-        form = editUserForm(initial = {'name': name, 'email': email})
+        form = editUserForm(initial = {'firstName': firstName, 'lastName': lastName, 'email': email})
 
         return render(request, 'editUser.html', {'user': user, 'form': form})
+
+def changePassword(request):
+    if request.method == 'POST':
+        pass
+
+    else:
+        user = request.user
+        form = PasswordChangeForm(user)
+        
+        return render(request, 'changePassword.html', {'form': form})
 
 def delUserAccount(request, username):
     user = User.objects.get(username = username)
     user.delete()
+
     return redirect('home')
 
 def viewPets(request):
@@ -128,11 +175,13 @@ def viewPets(request):
             Pets = perros.objects.filter(clave_de_cuenta = user)
             formAdd = addPetForm()
             formEdit = editPetForm()
+
             return render(request, 'pets.html', {'Pets': Pets, 'formAdd': formAdd, 'formEdit': formEdit})
 
         except:
             formAdd = addPetForm()
             formEdit = editPetForm()
+
             return render(request, 'pets.html', {'formAdd': formAdd, 'formEdit': formEdit})
 
 def addPet(request):
@@ -182,6 +231,7 @@ def editPet(request, petId = None):
         birthday = pet.fecha_de_nacimiento
         breed = pet.raza
         sex = pet.sexo
+
         form = editPetForm(initial = {'name': name, 'birthday': birthday, 'breed': breed, 'sex': sex})
 
         return render(request, 'editPet.html', {'pet': pet, 'form': form})
@@ -189,4 +239,5 @@ def editPet(request, petId = None):
 def delPet(request, petId):
     pet = perros.objects.get(clave_de_mascota = petId)
     pet.delete()
+
     return redirect('pets')

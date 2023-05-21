@@ -6,6 +6,9 @@ from django import forms
 
 # Website forms
 class calculatorForm(forms.Form):
+    brandName = forms.ChoiceField(choices = brands, required = True, label = 'Marca de la comida')
+    age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
+    sex = forms.ChoiceField(choices = sex, required = True, label = 'Sexo')
     pass
 
 class contactForm(forms.Form):
@@ -16,11 +19,13 @@ class contactForm(forms.Form):
 
 # Users and pets forms
 class addUserForm(forms.Form):
-    name = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre')
+    firstName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre(s)')
+    lastName = forms.CharField(min_length = 1, max_length = 30, label = 'Apellido(s)')
     email = forms.EmailField(required = True, label = 'Correo electrónico')
 
 class editUserForm(forms.Form):
-    name = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre')
+    firstName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre(s)')
+    lastName = forms.CharField(min_length = 1, max_length = 30, label = 'Apellido(s)')
     email = forms.EmailField(required = True, label = 'Correo electrónico')
 
 class addPetForm(forms.Form):

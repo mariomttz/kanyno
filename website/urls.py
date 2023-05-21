@@ -18,6 +18,7 @@ urlpatterns = [
     path('account/add/',              addUserAccount,   name = 'add-account'),
     path('account/edit/',             editUserAccount,  name = 'edit-account-post'),
     path('account/edit/<username>',   editUserAccount,  name = 'edit-account-get'),
+    path('account/edit/password/',    changePassword,   name = 'change-password'),
     path('account/delete/<username>', delUserAccount,   name = 'del-account'),
     path('pets/',                     viewPets,         name = 'pets'),
     path('pets/add/',                 addPet,           name = 'add-pet'),
