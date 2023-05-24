@@ -6,9 +6,6 @@ from django import forms
 
 # Website forms
 class calculatorForm(forms.Form):
-    brandName = forms.ChoiceField(choices = brands, required = True, label = 'Marca de la comida')
-    age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
-    sex = forms.ChoiceField(choices = sex, required = True, label = 'Sexo')
     pass
 
 class contactForm(forms.Form):

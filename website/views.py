@@ -1,7 +1,9 @@
 # Libraries and packages 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.core.validators import validate_email, ValidationError
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.models import User
 from website.auxiliaryFunctions import *
 from website.models import *
@@ -25,7 +27,45 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        pass
+        email = request.POST['email']
+
+        try:
+            validate_email(email)
+            form = contactForm(request.POST)
+
+            if form.is_valid():
+                subject = 'Dudas Kanyno'
+                body = {
+                    'firstName': form.cleaned_data['firstName'],
+                    'lastName': form.cleaned_data['lastName'],
+                    'email': form.cleaned_data['email'],
+                    'message': form.cleaned_data['message'],
+                }
+                message = '\n'.join(body.values())
+
+                try:
+                    send_mail(subject, message, 'mariomttz@comunidad.unam.mx', ['mariomttz@comunidad.unam.mx'])
+                    alert = 'El correo ha sido enviado exitosamente.'
+
+                    return render(request, 'contact.html', {'form': form, 'alert': alert})
+
+                except BadHeaderError as e:
+                    form = contactForm()
+                    error = 'Ha ocurrido un error al enviar el correo, por favor, inténtalo de nuevo.'
+                        
+                    return render(request, 'contact.html', {'form': form, 'error': error})
+
+            else:
+                form = addUserForm()
+                error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+                return render(request, 'addUserAccount.html', {'form': form, 'error': error})
+
+        except ValidationError as e:
+            form = contactForm()
+            error = f'El correo electrónico {email} no es válido, por favor, ingrésalo de nuevo.'
+
+            return render(request, 'addUserAccount.html', {'form': form, 'error': error})
 
     else:
         try:
@@ -51,27 +91,37 @@ def signup(request):
     if request.method == 'POST':
         pass1 = request.POST['password1']
         pass2 = request.POST['password2']
+        pass1_lenght = len(pass1)
+        pass2_lenght = len(pass2)
 
-        if pass1 == pass2:
-            username = request.POST['username']
+        if pass1_lenght >= 8 and pass2_lenght >= 8:
+            if pass1 == pass2:
+                username = request.POST['username']
 
-            try:
-                user = User.objects.create_user(username = username, password = pass1)
-                user.save()
-                login(request, user)
+                try:
+                    user = User.objects.create_user(username = username, password = pass1)
+                    user.save()
+                    login(request, user)
 
-                return redirect('add-account')
+                    return redirect('add-account')
 
-            except:
+                except:
+                    form = UserCreationForm()
+                    error = 'El nombre de usuario no está disponible.'
+
+                    return render(request, 'signup.html', {'form': form, 'error': error})
+            else:
                 form = UserCreationForm()
-                error = 'El nombre de usuario no está disponible.'
+                error = 'Las contraseñas no coinciden, inténtalo de nuevo.'
 
                 return render(request, 'signup.html', {'form': form, 'error': error})
+
         else:
             form = UserCreationForm()
-            error = 'Las contraseñas no coinciden, inténtalo de nuevo.'
+            error = 'Tu contraseña debe ser de al menos 8 caracteres, por favor, inténtalo de nuevo.'
 
             return render(request, 'signup.html', {'form': form, 'error': error})
+
     else:
         form = UserCreationForm()
 
@@ -81,18 +131,27 @@ def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username = username, password = password)
+        password_lenght = len(password)
 
-        if user is not None:
-            login(request, user)
+        if password_lenght >= 8:
+            user = authenticate(username = username, password = password)
 
-            return redirect('home')
+            if user is not None:
+                login(request, user)
 
+                return redirect('home')
+
+            else:
+                form = AuthenticationForm()
+                error = 'El nombre de usuario o la contraseña son incorrectos. Intenta de nuevo.'
+
+                return render(request, 'signin.html', {'form': form, 'error': error})
         else:
             form = AuthenticationForm()
-            error = 'El nombre de usuario o la contraseña son incorrectos. Intenta de nuevo.'
+            error = 'Tu contraseña debe ser de al menos 8 caracteres, por favor, inténtalo de nuevo.'
 
             return render(request, 'signin.html', {'form': form, 'error': error})
+            
     else:
         form = AuthenticationForm()
 
@@ -112,15 +171,34 @@ def viewUserAccount(request):
 
 def addUserAccount(request):
     if request.method == 'POST':
-        firstName = request.POST['firstName']
-        lastName = request.POST['lastName']
         email = request.POST['email']
-        username = request.user
+        
+        try:
+            validate_email(email)
+            form = addUserForm(request.POST)
 
-        user = usuarios.objects.create(nombre = firstName, apellido = lastName, correo = email, user = username)
-        user.save()
+            if form.is_valid():
+                firstName = form.cleaned_data['firstName']
+                lastName = form.cleaned_data['lastName']
+                email = form.cleaned_data['email']
+                username = request.user
 
-        return redirect('home')
+                user = usuarios.objects.create(nombre = firstName, apellido = lastName, correo = email, user = username)
+                user.save()
+
+                return redirect('home')
+
+            else:
+                form = addUserForm()
+                error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+                return render(request, 'addUserAccount.html', {'form': form, 'error': error})
+
+        except ValidationError as e:
+            form = addUserForm()
+            error = f'El correo electrónico {email} no es válido, por favor, ingrésalo de nuevo.'
+
+            return render(request, 'addUserAccount.html', {'form': form, 'error': error})
 
     else:
         form = addUserForm()
@@ -129,18 +207,45 @@ def addUserAccount(request):
 
 def editUserAccount(request, username = None):
     if request.method == 'POST':
-        userId = request.POST['userId']
-        firstName = request.POST['firstName']
-        lastName = request.POST['lastName']
         email = request.POST['email']
 
-        user = usuarios.objects.get(user = userId)
-        user.nombre = firstName
-        user.apellido = lastName
-        user.correo = email
-        user.save()
+        try:
+            validate_email(email)
+            form = editUserForm(request.POST)
 
-        return redirect('account')
+            if form.is_valid():
+                userId = request.POST['userId']
+                firstName = form.cleaned_data['firstName']
+                lastName = form.cleaned_data['lastName']
+                email = form.cleaned_data['email']
+
+                user = usuarios.objects.get(user = userId)
+                user.nombre = firstName
+                user.apellido = lastName
+                user.correo = email
+                user.save()
+
+                return redirect('account')
+
+            else:
+                user = usuarios.objects.get(user = username)
+                firstName = user.nombre
+                lastName = user.apellido
+                email = user.correo
+                form = editUserForm(initial = {'firstName': firstName, 'lastName': lastName, 'email': email})
+                error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+                return render(request, 'editUser.html', {'user': user, 'form': form, 'error': error})
+
+        except ValidationError as e:
+            user = usuarios.objects.get(user = username)
+            firstName = user.nombre
+            lastName = user.apellido
+            email = user.correo
+            form = editUserForm(initial = {'firstName': firstName, 'lastName': lastName, 'email': email})
+            error = f'El correo electrónico {email} no es válido, por favor, ingrésalo de nuevo.'
+
+            return render(request, 'editUser.html', {'user': user, 'form': form, 'error': error})
 
     else:
         user = usuarios.objects.get(user = username)
@@ -153,7 +258,43 @@ def editUserAccount(request, username = None):
 
 def changePassword(request):
     if request.method == 'POST':
-        pass
+        old_pass = request.POST['old_password']
+        new_pass1 = request.POST['new_password1']
+        new_pass2 = request.POST['new_password2']
+        new_pass1_lenght = len(new_pass1)
+        new_pass2_lenght = len(new_pass2)
+
+        if new_pass1_lenght >= 8 and new_pass2_lenght >= 8:
+            if new_pass1 == new_pass2:
+                user = request.user
+                form = PasswordChangeForm(user, request.POST)
+
+                if form.is_valid():
+                    userUpdate = form.save()
+                    update_session_auth_hash(request, userUpdate)
+
+                    return redirect('home')
+
+                else:
+                    user = request.user
+                    form = PasswordChangeForm(user)
+                    error = 'Tu contraseña antigua no coincide con la registrada en Kanyno, por favor, inténtalo de nuevo.'
+
+                    return render(request, 'changePassword.html', {'form': form, 'error': error})
+
+            else:
+                user = request.user
+                form = PasswordChangeForm(user)
+                error = 'Tus nuevas contraseñas no coinciden, por favor, inténtalo de nuevo.'
+
+                return render(request, 'changePassword.html', {'form': form, 'error': error})
+
+        else:
+            user = request.user
+            form = PasswordChangeForm(user)
+            error = 'Tu nueva contraseña debe ser de al menos 8 caracteres, por favor, inténtalo de nuevo.'
+
+            return render(request, 'changePassword.html', {'form': form, 'error': error})
 
     else:
         user = request.user
@@ -186,44 +327,65 @@ def viewPets(request):
 
 def addPet(request):
     if request.method == 'POST':
-        name = request.POST['name']
-        birthday = request.POST['birthday']
-        breed = request.POST['breed']
-        sex = request.POST['sex']
+        form = addPetForm(request.POST)
 
-        username = request.user
-        user = usuarios.objects.get(user = username)
-        userId = usuarios.objects.get(user = username).clave_de_cuenta
-        petId = dogKey(name, userId)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            birthday = form.cleaned_data['birthday']
+            breed = form.cleaned_data['breed']
+            sex = form.cleaned_data['sex']
 
-        pet = perros.objects.create(
-            clave_de_mascota = petId, 
-            nombre = name,
-            fecha_de_nacimiento = birthday, 
-            raza = breed,
-            sexo = sex,
-            clave_de_cuenta = user
-            )
-        pet.save()
+            username = request.user
+            user = usuarios.objects.get(user = username)
+            userId = usuarios.objects.get(user = username).clave_de_cuenta
+            petId = dogKey(name, userId)
 
-        return redirect('pets')
+            pet = perros.objects.create(
+                clave_de_mascota = petId, 
+                nombre = name,
+                fecha_de_nacimiento = birthday, 
+                raza = breed,
+                sexo = sex,
+                clave_de_cuenta = user
+                )
+            pet.save()
+
+            return redirect('pets')
+
+        else:
+            return redirect('pets')
+
 
 def editPet(request, petId = None):
     if request.method == 'POST':
-        petId = request.POST['petId']
-        name = request.POST['name']
-        birthday = request.POST['birthday']
-        breed = request.POST['breed']
-        sex = request.POST['sex']
+        form = editPetForm(request.POST)
 
-        pet = perros.objects.get(clave_de_mascota = petId)
-        pet.nombre = name
-        pet.fecha_de_nacimiento = birthday
-        pet.raza = breed
-        pet.sexo = sex
-        pet.save()
+        if form.is_valid():
+            petId = request.POST['petId']
+            name = form.cleaned_data['name']
+            birthday = form.cleaned_data['birthday']
+            breed = form.cleaned_data['breed']
+            sex = form.cleaned_data['sex']
 
-        return redirect('pets')
+            pet = perros.objects.get(clave_de_mascota = petId)
+            pet.nombre = name
+            pet.fecha_de_nacimiento = birthday
+            pet.raza = breed
+            pet.sexo = sex
+            pet.save()
+
+            return redirect('pets')
+
+        else:
+            pet = perros.objects.get(clave_de_mascota = petId)
+            name = pet.nombre
+            birthday = pet.fecha_de_nacimiento
+            breed = pet.raza
+            sex = pet.sexo
+            form = editPetForm(initial = {'name': name, 'birthday': birthday, 'breed': breed, 'sex': sex})
+            error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+            return render(request, 'editPet.html', {'pet': pet, 'form': form, 'error': error})
 
     else:
         pet = perros.objects.get(clave_de_mascota = petId)
@@ -241,3 +403,11 @@ def delPet(request, petId):
     pet.delete()
 
     return redirect('pets')
+
+# Errors website views
+
+def error404(request, exception):
+    return render(request, '404.html')
+
+def error500(request):
+    pass

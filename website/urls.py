@@ -26,3 +26,6 @@ urlpatterns = [
     path('pets/edit/<petId>',         editPet,          name = 'edit-pet-get'),
     path('pets/delete/<petId>',       delPet,           name = 'del-pet'),
 ]
+
+# URLs for errors
+handler404 = 'website.views.error404'
