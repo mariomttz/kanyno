@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Kanyno | Cuenta {% endblock %}
+{% block title %} Kanyno | Cuenta {% endblock %} 
 
 {% block content %}
 <!-- Heading -->
@@ -53,9 +53,14 @@
       class="btn btn-outline-danger"
       href="/account/delete/{{ userInfo.user }}"
       role="button"
+      onclick="return confirm('¿Estás seguro de realizar esta acción?');"
       >Borrar cuenta</a
     >
-    <a class="btn btn-outline-dark" href="{% url 'signout' %}" role="button"
+    <a
+      class="btn btn-outline-dark"
+      href="{% url 'signout' %}"
+      role="button"
+      onclick="return confirm('¿Estás seguro de realizar esta acción?');"
       >Cerrar sesi&oacute;n</a
     >
   </div>

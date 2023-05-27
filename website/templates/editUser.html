@@ -55,7 +55,13 @@
           role="button"
           >Cancelar</a
         >
-        <button type="submit" class="btn btn-outline-secondary">Guardar</button>
+        <button
+          type="submit"
+          class="btn btn-outline-secondary"
+          onclick="return confirm('¿Estás seguro de realizar esta acción?');"
+        >
+          Guardar
+        </button>
       </form>
     </div>
 
