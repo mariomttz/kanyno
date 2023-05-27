@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- Heading -->
-<div class="mx-auto p-4" style="width: 700px;">
+<div class="mx-auto p-4" style="width: 700px">
   <p class="h1 text-center">Kanyno</p>
   <p class="h4 text-center"><i>Pancita llena, perrito contento.</i></p>
 </div>
@@ -38,7 +38,11 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <a href="{% url 'calculator' %}">
+        <a
+          href="https://github.com/mariomttz/kanyno"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             src="{% static 'img/dog_img1.jpg' %}"
             class="d-block w-100"
@@ -46,10 +50,10 @@
           />
         </a>
         <div class="carousel-caption d-none d-md-block">
-          <h5>¿No sabes cuanto come tu perrito?</h5>
+          <h5>¿Est&aacute;s perdido?</h5>
           <p>
-            Con nuestra calculadora de gramaje para perro no tendr&aacute;s
-            m&aacute;s ese problema.
+            Puedes consultar el manual de uso del sitio web dando "clic" en la
+            imagen.
           </p>
         </div>
       </div>
@@ -101,7 +105,7 @@
   </div>
 
   <!-- Text -->
-  <div class="mx-auto p-4" style="width: 900px;">
+  <div class="mx-auto p-4" style="width: 900px">
     <p class="h4">¿Qu&eacute; es un perro?</p>
     <p>
       Mamífero carnívoro/omnívoro depredador de la familia de los cánidos, es

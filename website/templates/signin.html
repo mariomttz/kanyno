@@ -47,6 +47,9 @@
     <div class="mx-auto p-3" style="width: 700px">
       <form action="/signin/" method="POST">
         {% csrf_token %} {{ form|crispy }}
+        <a class="btn btn-outline-danger" href="{% url 'home' %}" role="button"
+          >Cancelar</a
+        >
         <button type="submit" class="btn btn-outline-secondary">
           Iniciar sesi&oacute;n
         </button>

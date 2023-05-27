@@ -1,14 +1,53 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %} Kanyno | Calculadora {% endblock %}
 
 {% block content %}
 <!-- Heading -->
-<div class="container-fluid">
+<div class="mx-auto p-4" style="width: 700px">
   <p class="h1 text-center">Calculadora</p>
 </div>
 
+<!-- Errors messages -->
+{% if error is not defined %}
+<div class="mx-auto p-5" style="width: 700px">
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>¡Santo guacamole!</strong> {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+</div>
+{% endif %}
+
+<!-- Manual button -->
+<div class="d-grid gap-2 col-3 mx-auto">
+  <a
+    class="btn btn-outline-info"
+    href="https://github.com/mariomttz/kanyno"
+    role="button"
+    target="_blank"
+    rel="noopener noreferrer"
+    >Manual de la calculadora</a
+  >
+</div>
+
 <!-- Content -->
-<div class="container"></div>
+<div class="mx-auto p-5" style="width: 700px">
+  <form action="/calculator/" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="petId" value="{{ petId }}" />
+    <input type="hidden" name="sex" value="{{ sex }}" />
+    {{ form | crispy }}
+    <a class="btn btn-outline-danger" href="{% url 'pets' %}" role="button"
+      >Cancelar</a
+    >
+    <button type="submit" class="btn btn-outline-primary">Enviar</button>
+  </form>
+</div>
 {% endblock %}

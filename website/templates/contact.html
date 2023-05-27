@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Kanyno | Contacto {% endblock %} 
+{% block title %} Kanyno | Contacto {% endblock %}
 
 {% block content %}
 <!-- Heading -->
@@ -53,7 +53,7 @@
   </p>
 
   <!-- Contact form -->
-  <form action="">
+  <form action="/contact/" method="POST">
     {% csrf_token %} {{ form | crispy }}
     <button type="submit" class="btn btn-outline-secondary">
       Enviar mensaje

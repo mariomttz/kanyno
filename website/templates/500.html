@@ -20,12 +20,32 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+
+    <!-- W3 Schools -->
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+
+      .bg {
+        /* The image used */
+        background-image: url("{% static 'img/500.png' %}");
+
+        /* Full height */
+        height: 100%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
   </head>
   <body>
     <!-- Image -->
-    <div class="container">
-      <img class="img-fluid" src="" alt="Error 500" />
-    </div>
+    <div class="bg"></div>
 
     <!-- JS Bootstrap scripts -->
     <script

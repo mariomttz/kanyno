@@ -24,7 +24,7 @@
   </head>
   <body>
     <!-- Heading -->
-    <div class="mx-auto p-5" style="width: 700px;">
+    <div class="mx-auto p-5" style="width: 700px">
       <p class="h1 text-center">Reg&iacute;strate en Kanyno</p>
     </div>
 
@@ -44,16 +44,19 @@
     {% endif %}
 
     <!-- Content -->
-    <div class="mx-auto p-3" style="width: 700px;">
+    <div class="mx-auto p-3" style="width: 700px">
       <form action="/signup/" method="POST">
         {% csrf_token %} {{ form|crispy }}
+        <a class="btn btn-outline-danger" href="{% url 'home' %}" role="button"
+          >Cancelar</a
+        >
         <button type="submit" class="btn btn-outline-secondary">
           Registrarme
         </button>
       </form>
     </div>
 
-    <div class="mx-auto p-2" style="width: 400px;">
+    <div class="mx-auto p-2" style="width: 400px">
       <p class="text-center text-md-start">
         ¿Ya tienes una cuenta en Kanyno?
         <a href="{% url 'signin' %}">Inicia sesi&oacute;n.</a>

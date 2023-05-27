@@ -24,7 +24,7 @@
   <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
+      <div class="container-fluid" style="width: 1700px">
         <a class="navbar-brand" href="{% url 'home' %}">
           <img
             src="{% static 'img/kanyno_logo.png' %}"
@@ -53,58 +53,24 @@
                 >Inicio</a
               >
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'calculator' %}"
-                >Calculadora</a
-              >
-            </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'pets' %}"
                 >Mis mascotas</a
               >
-            </li>
+            </li class="nav-item">
             {% endif %}
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+            <li>
+              <a class="nav-link" href="{% url 'about' %}"
+                >Acerca de Kanyno</a
               >
-                + de Kanyno
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="{% url 'about' %}"
-                    >Acerca de Kanyno</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'contact' %}"
-                    >Contacto</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="https://github.com/mariomttz/kanyno"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >GitHub</a
-                  >
-                </li>
-              </ul>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
+            </li> 
           </ul>
-          <form
-            action="/search/"
-            method="POST"
-            class="d-flex"
-            role="search"
-          >
+          <form action="/search/" method="POST" class="d-flex" role="search">
+            {% csrf_token %}
             <input
               class="form-control me-2"
               type="search"
@@ -158,13 +124,13 @@
               >Inicio</a
             >
           </li>
+          {% if user.is_authenticated %}
           <li class="nav-item">
-            <a
-              href="{% url 'calculator' %}"
-              class="nav-link px-2 text-body-secondary"
-              >Calculadora</a
+            <a href="{% url 'pets' %}" class="nav-link px-2 text-body-secondary"
+              >Mis mascotas</a
             >
           </li>
+          {% endif %}
           <li class="nav-item">
             <a
               href="{% url 'about' %}"

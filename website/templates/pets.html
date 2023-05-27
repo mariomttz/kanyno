@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
-{%block title %} Kanyno | Mis mascotas {% endblock %}
+{% block title %} Kanyno | Mis mascotas {% endblock %}
 
 {% block content %}
 <!-- Heading -->
@@ -81,16 +80,25 @@
               <th scope="col">Fecha de nacimiento</th>
               <th scope="col">Raza</th>
               <th scope="col">Sexo</th>
+              <th scope="coo">Calcular gramaje</th>
             </tr>
           </thead>
           <tbody>
-            {% for pet in Pets %}
+            {% for pet in pets %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{ pet.nombre }}</td>
               <td>{{ pet.fecha_de_nacimiento }}</td>
               <td>{{ pet.raza }}</td>
               <td>{{ pet.sexo }}</td>
+              <td>
+                <a
+                  class="btn btn-outline-secondary"
+                  href="/calculator/{{ pet.clave_de_mascota }}"
+                  role="button"
+                  >Calcular</a
+                >
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -120,7 +128,30 @@
       aria-labelledby="nav-cal-tab"
       tabindex="0"
     >
-      Mis cálculos
+      <div class="container-sm text-center">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">No. De c&aacute;lculo</th>
+              <th scope="col">Nombre de la mascota</th>
+              <th scope="col">Nombre del producto</th>
+              <th scope="col">Fecha de cálculo</th>
+              <th scope="col">Gramaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for petCalculation in petsCalculations %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ petCalculation.clave_de_mascota.nombre }}</td>
+              <td>{{ petCalculation.nombre_producto }}</td>
+              <td>{{ petCalculation.fecha_de_calculo }}</td>
+              <td>{{ petCalculation.gramaje }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     <div
       class="tab-pane fade"
@@ -142,7 +173,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for pet in Pets %}
+            {% for pet in pets %}
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{ pet.nombre }}</td>
