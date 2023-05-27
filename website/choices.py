@@ -36,7 +36,7 @@ age = [
     ('Mayor', 'Mayor')
 ]
 
-pregnant = [
+yes_no = [
     ('Si', 'Si'),
     ('No', 'No')
 ]

@@ -4,10 +4,21 @@ from website.choices import *
 from website.models import *
 from django import forms
 
-# Website forms
-class calculatorForm(forms.Form):
-    pass
+# Calculator forms
+class femaleCalculatorForm(forms.Form):
+    petName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre de tu mascota')
+    age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
+    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso')
+    pregnant = forms.ChoiceField(choices = yes_no, required = True, label = '¿Tu perrita está embarazada?')
+    brandName = forms.ChoiceField(choices = brands, required = True, label = 'Nombre del producto')
 
+class maleCalculationForm(forms.Form):
+    petName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre de tu mascota')
+    age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
+    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso')
+    brandName = forms.ChoiceField(choices = brands, required = True, label = 'Nombre del producto')
+
+# Website forms
 class contactForm(forms.Form):
     firstName = forms.CharField(min_length = 1, max_length = 50, required = True, label = 'Nombre(s)')
     lastName = forms.CharField(min_length = 1,  max_length = 50, label = 'Apellido(s)')

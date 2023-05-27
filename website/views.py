@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.models import User
 from website.auxiliaryFunctions import *
+from datetime import datetime
 from website.models import *
 from website.forms import *
 
@@ -13,14 +14,220 @@ from website.forms import *
 def home(request):
     return render(request, 'home.html')
 
-def calculator(request):
+def calculator(request, petId = None):
     if request.method == 'POST':
-        pass
+        sex = request.POST['sex']
+
+        if sex == 'Hembra':
+            form = femaleCalculatorForm(request.POST)
+
+            if form.is_valid():
+                pregnant = form.cleaned_data['pregnant']
+                age = form.cleaned_data['age']
+
+                if pregnant == 'Si':
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = pregnant_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+                elif age == 'Cachorro':
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = little_puppy_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+                elif age == 'Adulto':
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = adult_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+                else:
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = old_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+            else:
+                pet = perros.objects.get(clave_de_mascota = petId)
+                sex = pet.sexo
+                petId = pet.clave_de_mascota
+                name = pet.nombre
+                timeNow = datetime.now()
+                birthday = pet.fecha_de_nacimiento
+                birthdayYear = int(birthday.strftime('%Y'))
+                currentYear = int(timeNow.strftime('%Y'))
+                age = dogAge(currentYear, birthdayYear)
+                form = maleCalculationForm(initial = {'petName': name, 'age': age, 'brandName': 'Otro'})
+                error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+                return render(request, 'calculator.html', {'error': error, 'petId': petId, 'sex': sex, 'form': form})
+
+        else:
+            form = maleCalculationForm(request.POST)
+
+            if form.is_valid():
+                age = form.cleaned_data['age']
+
+                if age == 'Cachorro':
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = little_puppy_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+                elif age == 'Adulto':
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = adult_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+                else:
+                    brandName = form.cleaned_data['brandName']
+                    weight = form.cleaned_data['weight']
+                    grammage = old_kcal(weight)
+                    timeNow = datetime.now()
+                    calculationDate = timeNow.strftime('%Y-%m-%d')
+                    petId = request.POST['petId']
+                    pet = perros.objects.get(clave_de_mascota = petId)
+
+                    petCalculation = gramajes.objects.create(
+                        nombre_producto = brandName,
+                        gramaje = grammage,
+                        fecha_de_calculo = calculationDate,
+                        clave_de_mascota = pet
+                    )
+
+                    petCalculation.save()
+
+                    return redirect('pets')
+
+            else:
+                pet = perros.objects.get(clave_de_mascota = petId)
+                sex = pet.sexo
+                petId = pet.clave_de_mascota
+                name = pet.nombre
+                timeNow = datetime.now()
+                birthday = pet.fecha_de_nacimiento
+                birthdayYear = int(birthday.strftime('%Y'))
+                currentYear = int(timeNow.strftime('%Y'))
+                age = dogAge(currentYear, birthdayYear)
+                form = maleCalculationForm(initial = {'petName': name, 'age': age, 'brandName': 'Otro'})
+                error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
+
+                return render(request, 'calculator.html', {'error': error, 'petId': petId, 'sex': sex, 'form': form})
 
     else:
-        form = calculatorForm()
+        pet = perros.objects.get(clave_de_mascota = petId)
+        sex = pet.sexo
 
-        return render(request, 'calculator.html', {'form': form})
+        if sex == 'Hembra':
+            petId = pet.clave_de_mascota
+            name = pet.nombre
+            timeNow = datetime.now()
+            birthday = pet.fecha_de_nacimiento
+            birthdayYear = int(birthday.strftime('%Y'))
+            currentYear = int(timeNow.strftime('%Y'))
+            age = dogAge(currentYear, birthdayYear)
+            form = femaleCalculatorForm(initial = {'petName': name, 'age': age, 'pregnant': 'No', 'brandName': 'Otro'})
+
+            return render(request, 'calculator.html', {'petId': petId, 'sex': sex, 'form': form})
+
+        else:
+            petId = pet.clave_de_mascota
+            name = pet.nombre
+            timeNow = datetime.now()
+            birthday = pet.fecha_de_nacimiento
+            birthdayYear = int(birthday.strftime('%Y'))
+            currentYear = int(timeNow.strftime('%Y'))
+            age = dogAge(currentYear, birthdayYear)
+            form = maleCalculationForm(initial = {'petName': name, 'age': age, 'brandName': 'Otro'})
+
+            return render(request, 'calculator.html', {'petId': petId, 'sex': sex, 'form': form})
 
 def about(request):
     return render(request, 'about.html')
@@ -56,16 +263,16 @@ def contact(request):
                     return render(request, 'contact.html', {'form': form, 'error': error})
 
             else:
-                form = addUserForm()
+                form = contactForm()
                 error = 'Los datos ingresados no son válidos, por favor, inténtalo de nuevo.'
 
-                return render(request, 'addUserAccount.html', {'form': form, 'error': error})
+                return render(request, 'contact.html', {'form': form, 'error': error})
 
         except ValidationError as e:
             form = contactForm()
             error = f'El correo electrónico {email} no es válido, por favor, ingrésalo de nuevo.'
 
-            return render(request, 'addUserAccount.html', {'form': form, 'error': error})
+            return render(request, 'contact.html', {'form': form, 'error': error})
 
     else:
         try:
@@ -205,7 +412,7 @@ def addUserAccount(request):
 
         return render(request, 'addUserAccount.html', {'form': form})
 
-def editUserAccount(request, username = None):
+def editUserAccount(request, userId = None):
     if request.method == 'POST':
         email = request.POST['email']
 
@@ -248,7 +455,7 @@ def editUserAccount(request, username = None):
             return render(request, 'editUser.html', {'user': user, 'form': form, 'error': error})
 
     else:
-        user = usuarios.objects.get(user = username)
+        user = usuarios.objects.get(user = userId)
         firstName = user.nombre
         lastName = user.apellido
         email = user.correo
@@ -310,20 +517,25 @@ def delUserAccount(request, username):
 
 def viewPets(request):
     if request.method == 'GET':
-        try:
-            username = request.user
-            user = usuarios.objects.get(user = username)
-            Pets = perros.objects.filter(clave_de_cuenta = user)
-            formAdd = addPetForm()
-            formEdit = editPetForm()
+        username = request.user
+        user = usuarios.objects.get(user = username)
+        pets = perros.objects.filter(clave_de_cuenta = user)
 
-            return render(request, 'pets.html', {'Pets': Pets, 'formAdd': formAdd, 'formEdit': formEdit})
+        petsCalculations = []
 
-        except:
-            formAdd = addPetForm()
-            formEdit = editPetForm()
+        for pet in pets:
+            petId = pet.clave_de_mascota
 
-            return render(request, 'pets.html', {'formAdd': formAdd, 'formEdit': formEdit})
+            try:
+                petsCalculations.append(gramajes.objects.get(clave_de_mascota = petId))
+
+            except:
+                continue
+
+        formAdd = addPetForm()
+        formEdit = editPetForm()
+
+        return render(request, 'pets.html', {'pets': pets, 'formAdd': formAdd, 'petsCalculations': petsCalculations, 'formEdit': formEdit})
 
 def addPet(request):
     if request.method == 'POST':
@@ -410,4 +622,4 @@ def error404(request, exception):
     return render(request, '404.html')
 
 def error500(request):
-    pass
+    return render(request, '500.html')

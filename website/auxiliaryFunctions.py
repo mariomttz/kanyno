@@ -1,5 +1,18 @@
 # Libraries and packages
 
+#
+def dogAge(currentYear: int, birthdayYear: int) -> str:
+    age = currentYear - birthdayYear
+
+    if age <= 2:
+        return 'Cachorro'
+
+    elif 2 < age <= 10:
+        return 'Adulto'
+
+    else:
+        return 'Mayor'
+
 # Website auxiliary functions
 def dogKey(name, userId):
     import random
