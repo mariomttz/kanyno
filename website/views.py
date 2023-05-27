@@ -292,7 +292,23 @@ def contact(request):
 
 def search(request):
     if request.method == 'POST':
-        pass
+        search_field = request.POST['search-field'].lower()
+
+        urlViews = {
+            'inicio': 'home',
+            'acerca': 'about',
+            'contacto': 'contact',
+            'cuenta': 'account',
+            'mascotas': 'pets'
+        }
+        
+        try:
+            view = urlViews[search_field]
+
+            return redirect(view)
+
+        except:
+            return render(request, 'searchError.html', {'search_field': search_field})
 
 def signup(request):
     if request.method == 'POST':
