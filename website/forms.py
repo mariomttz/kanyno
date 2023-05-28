@@ -8,14 +8,14 @@ from django import forms
 class femaleCalculatorForm(forms.Form):
     petName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre de tu mascota')
     age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
-    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso')
+    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso (kg)')
     pregnant = forms.ChoiceField(choices = yes_no, required = True, label = '¿Tu perrita está embarazada?')
     brandName = forms.ChoiceField(choices = brands, required = True, label = 'Nombre del producto')
 
 class maleCalculationForm(forms.Form):
     petName = forms.CharField(min_length = 1, max_length = 30, required = True, label = 'Nombre de tu mascota')
     age = forms.ChoiceField(choices = age, required = True, label = 'Edad')
-    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso')
+    weight = forms.FloatField(min_value = 0.1, required = True, label = 'Peso (kg)')
     brandName = forms.ChoiceField(choices = brands, required = True, label = 'Nombre del producto')
 
 # Website forms
