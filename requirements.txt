@@ -1,4 +1,10 @@
 -i https://pypi.org/simple
-asgiref==3.6.0 ; python_version >= '3.7'
+asgiref==3.7.0 ; python_version >= '3.7'
+crispy-bootstrap5==0.7
 django==4.2.1
+django-bootstrap-datepicker-plus==5.0.3
+django-crispy-forms==2.0 ; python_version >= '3.7'
+pydantic==1.10.8 ; python_version >= '3.7'
 sqlparse==0.4.4 ; python_version >= '3.5'
+typing-extensions==4.6.0 ; python_version >= '3.7'
+validate-email==1.3
